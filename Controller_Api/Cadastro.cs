@@ -23,7 +23,6 @@ namespace Controller_Api
 
         public Cadastro()
         {
-
         }
     }
 }

@@ -6,17 +6,13 @@ namespace Controller_Api.Controllers
     [Route("[controller]")]
     public class CadastroController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
         public List<Cadastro> cadastros = new()
         {
-            new Cadastro("95896994052", "Buzz", Convert.ToDateTime(2000/05/10), 22),
-            new Cadastro("85503201027", "Woody", Convert.ToDateTime(1996/06/04), 26),
-            new Cadastro("29062467008", "Jessie", Convert.ToDateTime(1999/12/10), 22),
-            new Cadastro("34659205037", "Rex", Convert.ToDateTime(2001/03/27), 21),
-            new Cadastro("44288043000", "Andy", Convert.ToDateTime(2010/02/04), 12),
+            new Cadastro("95896994052", "Buzz", Convert.ToDateTime(2000-05-10), 22),
+            new Cadastro("85503201027", "Woody", Convert.ToDateTime(1996-06-04), 26),
+            new Cadastro("29062467008", "Jessie", Convert.ToDateTime(1999-12-10), 22),
+            new Cadastro("34659205037", "Rex", Convert.ToDateTime(2001-03-27), 21),
+            new Cadastro("44288043000", "Andy", Convert.ToDateTime(2010-02-04), 12),
         };
 
         private readonly ILogger<CadastroController> _logger;
@@ -34,14 +30,14 @@ namespace Controller_Api.Controllers
             .ToList();
         }
 
-        //
+        //https://localhost:7214/Cadastro
         [HttpGet]
         public IEnumerable<Cadastro> Get()
         {
             return cadastros;
         }
 
-        //
+        //https://localhost:7214/Cadastro
         [HttpPost]
         public IEnumerable<Cadastro> Post(Cadastro novoCadastro)
         {
@@ -49,6 +45,7 @@ namespace Controller_Api.Controllers
             return cadastros;
         }
 
+        //https://localhost:7214/Cadastro?index=2
         [HttpPut]
         public IEnumerable<Cadastro> Post(int index, Cadastro novoCadastro)
         {
@@ -56,6 +53,7 @@ namespace Controller_Api.Controllers
             return cadastros;
         }
 
+        //https://localhost:7214/Cadastro?index=1
         [HttpDelete]
         public IEnumerable<Cadastro> Delete(int index)
         {
