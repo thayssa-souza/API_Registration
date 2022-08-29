@@ -33,33 +33,45 @@ namespace Controller_Api.Controllers
 
         //https://localhost:7214/Cadastro
         [HttpGet]
-        public IEnumerable<Cadastro> Get()
+        public ActionResult<Cadastro> Get()
         {
-            return cadastros;
+            return Created(nameof(Get), cadastros);
         }
 
         //https://localhost:7214/Cadastro
         [HttpPost]
-        public IEnumerable<Cadastro> Post(Cadastro novoCadastro)
+        public ActionResult<Cadastro> Post(Cadastro novoCadastro)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(cadastros);
+            }
             cadastros.Add(novoCadastro);
-            return cadastros;
+            return CreatedAtAction(nameof(Post), cadastros);
         }
 
         //https://localhost:7214/Cadastro?index=2
         [HttpPut]
-        public IEnumerable<Cadastro> Post(int index, Cadastro novoCadastro)
+        public ActionResult<Cadastro> Put(int index, Cadastro novoCadastro)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest((cadastros));
+            }
             cadastros[index] = novoCadastro;
-            return cadastros;
+            return Accepted(cadastros);
         }
 
         //https://localhost:7214/Cadastro?index=1
         [HttpDelete]
-        public IEnumerable<Cadastro> Delete(int index)
+        public ActionResult<Cadastro> Delete(int index)
         {
+            if(!ModelState.IsValid)
+            {
+                return Unauthorized(cadastros);
+            }
             cadastros.RemoveAt(index);
-            return cadastros;
+            return Ok(cadastros);
         }
     }
 }
