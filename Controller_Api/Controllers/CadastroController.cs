@@ -6,26 +6,27 @@ namespace Controller_Api.Controllers
     [Route("[controller]")]
     public class CadastroController : ControllerBase
     {
-        public static List<Cadastro> cadastros = new()
+        public List<Cadastro> cadastros = new()
         {
-            new Cadastro("95896994052", "Buzz", Convert.ToDateTime(2000/05/10), 22),
-            new Cadastro("85503201027", "Woody", Convert.ToDateTime(1996/06/04), 26),
-            new Cadastro("29062467008", "Jessie", Convert.ToDateTime(1999/12/10), 22),
-            new Cadastro("34659205037", "Rex", Convert.ToDateTime(2001/03/27), 21),
-            new Cadastro("44288043000", "Andy", Convert.ToDateTime(2010/02/04), 12),
+            new Cadastro("95896994052", "Buzz", Convert.ToDateTime("2000/05/10"), 22),
+            new Cadastro("85503201027", "Woody", Convert.ToDateTime("1996/06/04"), 26),
+            new Cadastro("29062467008", "Jessie", Convert.ToDateTime("1999/12/10"), 22),
+            new Cadastro("34659205037", "Rex", Convert.ToDateTime("2001/03/27"), 21),
+            new Cadastro("44288043000", "Andy", Convert.ToDateTime("2010/02/04"), 12),
         };
 
         private readonly ILogger<CadastroController> _logger;
+        public List<Cadastro> cadastroPessoa = new();
 
         public CadastroController(ILogger<CadastroController> logger)
         {
             _logger = logger;
-            cadastros = cadastros.Select(cadastro=> new Cadastro
+            cadastros = cadastros.Select(cadastroPessoa => new Cadastro
             {
-                Cpf = cadastro.Cpf,
-                Nome = cadastro.Nome,
-                DataNascimento = cadastro.DataNascimento,
-                Idade = cadastro.Idade,
+                Cpf = cadastroPessoa.Cpf,
+                Nome = cadastroPessoa.Nome,
+                DataNascimento = cadastroPessoa.DataNascimento,
+                Idade = cadastroPessoa.Idade,
             })
             .ToList();
         }
