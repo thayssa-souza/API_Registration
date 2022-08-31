@@ -12,24 +12,52 @@ namespace Controller_Api
         public string Cpf { get; set; }
 
         [Required(ErrorMessage = "Nome obrigatório")]
-        [MinLength(2)]
+        [MinLength(3, ErrorMessage = "Nome precisa conter, no mínimo, 3 caracteres")]
         public string Nome { get; set; }
 
         public DateTime DataNascimento { get; set; }
 
-        [Range(10, 30)]
-        public int Idade { get; set; }
+        [Range(10, 60, ErrorMessage = "Aceitamos clientes com idade a partir de 10 anos e idade máxima de 60 anos")]
+        public int Idade => GetIdade(DataNascimento);
 
-        public Cadastro(string nome, string cpf, DateTime dataNasc, int idade)
+        public Cadastro(string cpf, string nome, DateTime dataNasc)
         {
             Cpf = cpf;
             Nome = nome;
             DataNascimento = dataNasc;
-            Idade = idade;
         }
 
         public Cadastro()
         {
+        }
+
+        public int GetIdade(DateTime DataNascimento)
+        {
+            int Idade;
+
+            if (DataNascimento.Month > DateTime.Now.Month)
+            {
+                Idade = (DateTime.Now.Year - DataNascimento.Year) - 1;
+                return Idade;
+            }
+            else if (DataNascimento.Month < DateTime.Now.Month)
+            {
+                Idade = (DateTime.Now.Year - DataNascimento.Year);
+                return Idade;
+            }
+            else
+            {
+                if (DataNascimento.Day > DateTime.Now.Day)
+                {
+                    Idade = (DateTime.Now.Year - DataNascimento.Year) - 1;
+                    return Idade;
+                }
+                else
+                {
+                    Idade = (DateTime.Now.Year - DataNascimento.Year);
+                    return Idade;
+                }
+            }
         }
     }
 }
