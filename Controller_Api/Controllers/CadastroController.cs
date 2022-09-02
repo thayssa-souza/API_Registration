@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Controller_Api;
+using Controller_Api.Repository;
 
 namespace Controller_Api.Controllers
 {
@@ -7,34 +8,42 @@ namespace Controller_Api.Controllers
     [Route("[controller]")]
     public class CadastroController : ControllerBase
     {
-        public List<Cadastro> cadastros = new()
-        {
-            new Cadastro("95896994052", "Buzz", Convert.ToDateTime("2000/05/10")),
-            new Cadastro("85503201027", "Woody", Convert.ToDateTime("1996/06/04")),
-            new Cadastro("29062467008", "Jessie", Convert.ToDateTime("1999/12/10")),
-            new Cadastro("34659205037", "Rex", Convert.ToDateTime("2001/03/27")),
-            new Cadastro("44288043000", "Andy", Convert.ToDateTime("2010/02/04")),
-        };
+        public List<Cadastro> CadastrosLista { get; set; }
 
-        private readonly ILogger<CadastroController> _logger;
+        public CadastroRepository _repositoryCadastro;
 
-        public CadastroController(ILogger<CadastroController> logger)
+        public CadastroController(IConfiguration configuration)
         {
-            _logger = logger;
+            CadastrosLista = new List<Cadastro>();
+            _repositoryCadastro = new CadastroRepository(configuration);
+        }
+
+        //https://localhost:7214/Cadastro/buscar-todos-cadastros
+        [HttpGet("buscar-todos-cadastros")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<Cadastro> GetTodosCadastros()
+        {
+            var clientes = _repositoryCadastro.GetTodosCadastros();
+            if (clientes == null)
+            {
+                return NotFound("Não há clientes cadastrados.");
+            }
+            return Ok(clientes);
         }
 
         //https://localhost:7214/Cadastro/buscar-cadastro?Cpf=95896994052
-        [HttpGet("buscar-cadastro")]
+        [HttpGet("buscar-cadastro-cpf")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cadastro> Get(string Cpf)
+        public ActionResult<Cadastro> GetCadastrosClientes(string cpf)
         {
-            var pessoa = cadastros.Find(pessoa => pessoa.Cpf == Cpf);
-            if (pessoa == null)
+            var cliente = _repositoryCadastro.GetCadastrosClientes(cpf);
+            if (cliente == null)
             {
                 return NotFound("Lamento, CPF não cadastrado.");
             }
-            return Ok(pessoa);
+            return Ok(cliente);
         }
 
         //https://localhost:7214/Cadastro/novo-cadastro
@@ -43,42 +52,42 @@ namespace Controller_Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<Cadastro> Post(Cadastro novoCadastro)
+        public ActionResult<Cadastro> InsertCadastroCliente(Cadastro cliente)
         {
-            if (!ModelState.IsValid)
+            var clientes = _repositoryCadastro.InsertCadastroCliente(cliente);
+            if (clientes == null)
             {
                 return BadRequest("Cadastro não válido, confira as informações e tente novamente.");
             }
-            cadastros.Add(novoCadastro);
-            return CreatedAtAction(nameof(Post), cadastros);
+            CadastrosLista.Add(cliente);
+            return CreatedAtAction(nameof(InsertCadastroCliente), cliente);
         }
 
         //https://localhost:7214/Cadastro/alterar-cadastro/1
-        [HttpPut("alterar-cadastro/{index}")]
+        [HttpPut("alterar-cadastro/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public ActionResult<Cadastro> Put(int index, Cadastro alteradoCadastro)
+        public ActionResult<Cadastro> UpdateCadastroCliente(long id, Cadastro cliente)
         {
-            if(alteradoCadastro == null)
+            if(_repositoryCadastro.UpdateCadastroCliente(id, cliente))
             {
-                return BadRequest("Não foi possível alterar o cadastro.");
+                return Accepted(cliente);
             }
-            cadastros[index] = alteradoCadastro;
-            return Accepted(cadastros);
+            return BadRequest("Não foi possível alterar o cadastro.");
+
         }
 
         //https://localhost:7214/Cadastro/deletar-cadastro/4
-        [HttpDelete("deletar-cadastro/{index}")]
+        [HttpDelete("deletar-cadastro/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cadastro> Delete(int index)
+        public ActionResult<Cadastro> DeleteCadastroCliente(int id)
         {
-            if(!ModelState.IsValid)
+            if(_repositoryCadastro.DeleteCadastroCliente(id))
             {
-                return Unauthorized("Não foi possível deletar o cadastro.");
+                return Ok();
             }
-            cadastros.RemoveAt(index);
-            return Ok(cadastros);
+            return Unauthorized("Não foi possível deletar o cadastro.");
         }
     }
 }
