@@ -5,19 +5,18 @@ using System.Data;
 
 namespace ApiBanco.Infra.Data
 {
-        public class ConnectionDataBase : IConnectionDataBase
+    public class ConnectionDataBase : IConnectionDataBase
+    {
+        private readonly IConfiguration _configuration;
+        public ConnectionDataBase(IConfiguration configuration)
         {
-            private readonly IConfiguration _configuration;
-
-            public ConnectionDataBase(IConfiguration configuration)
-            {
-                _configuration = configuration;
-            }
-
-            public IDbConnection CreateConnection()
-            {
-                return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            }
-
+            _configuration = configuration;
         }
+
+        public IDbConnection CreateConnection()
+        {
+            return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        }
+
+    }
 }
