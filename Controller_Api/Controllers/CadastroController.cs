@@ -8,13 +8,10 @@ namespace ApiBanco.Controllers
     [Route("[controller]")]
     public class CadastroController : ControllerBase
     {
-        public List<Cadastro> CadastrosLista { get; set; }
-
         public ICadastroService _cadastroService;
 
         public CadastroController(ICadastroService cadastroService)
         {
-            CadastrosLista = new List<Cadastro>();
             _cadastroService = cadastroService;
         }
 
@@ -59,7 +56,6 @@ namespace ApiBanco.Controllers
             {
                 return BadRequest("Cadastro não válido, confira as informações e tente novamente.");
             }
-            CadastrosLista.Add(cliente);
             return CreatedAtAction(nameof(InserirCadastroCliente), cliente);
         }
 

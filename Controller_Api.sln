@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiBanco", "Controller_Api\ApiBanco.csproj", "{FCA980DD-333E-40A0-A36F-A6B3CD65D0C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller_Api", "Controller_Api\Controller_Api.csproj", "{FCA980DD-333E-40A0-A36F-A6B3CD65D0C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiBanco.Core", "Controller_ApiCore\ApiBanco.Core.csproj", "{9333C388-03F4-4622-BC30-7567DA8DFED0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiBanco.Infra.Data", "ApiBanco.Infra.Data\ApiBanco.Infra.Data.csproj", "{6EA91E93-4A8D-4FC3-B462-99658FABDFCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiBanco.Infra.Data", "ApiBanco.Infra.Data\ApiBanco.Infra.Data.csproj", "{6EA91E93-4A8D-4FC3-B462-99658FABDFCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,7 @@
 using ApiBanco.Core.Interfaces;
 using ApiBanco.Core.Services;
+using ApiBanco.Infra.Data;
+using ApiBanco.Infra.Data.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICadastroRepository, ICadastroRepository>();
+builder.Services.AddScoped<ICadastroRepository, CadastroRepository>();
 builder.Services.AddScoped<ICadastroService, CadastroService>();
-builder.Services.AddScoped<IConnectionDataBase, IConnectionDataBase>();
+builder.Services.AddScoped<IConnectionDataBase, ConnectionDataBase>();
 
 var app = builder.Build();
 
