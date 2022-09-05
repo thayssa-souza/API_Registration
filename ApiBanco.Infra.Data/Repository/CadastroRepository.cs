@@ -1,27 +1,27 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using ApiBanco.Core.Services;
+using ApiBanco.Core.Interfaces;
 
-namespace ApiBanco.Repository
+namespace ApiBanco.Infra.Data.Repository
 {
-    public class CadastroRepository
+    public class CadastroRepository : ICadastroRepository
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConnectionDataBase _dataBase;
 
-        public CadastroRepository(IConfiguration configuration)
+        public CadastroRepository(IConnectionDataBase dataBase)
         {
-            _configuration = configuration;
+            _dataBase = dataBase;
         }
 
-        public List<Cadastro> GetTodosCadastros()
+        public List<Cadastro> ConsultarCadastros()
         {
             var query = "SELECT * FROM clientes";
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = _dataBase.CreateConnection();
             return conn.Query<Cadastro>(query).ToList();
         }
 
-        public Cadastro GetCadastrosClientes(string cpf)
+        public Cadastro ConsultarCadastroCliente(string cpf)
         {
             var query = "SELECT * FROM clientes WHERE cpf = @cpf";
             var parameters = new DynamicParameters(new
@@ -29,11 +29,11 @@ namespace ApiBanco.Repository
                 cpf
             });
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = _dataBase.CreateConnection();
             return conn.QueryFirstOrDefault<Cadastro>(query, parameters);
         }
 
-        public bool InsertCadastroCliente(Cadastro cadastro)
+        public bool InserirCadastroCliente(Cadastro cadastro)
         {
             var query = "INSERT INTO clientes VALUES (@cpf, @nome, @dataNascimento, @idade)";
 
@@ -43,11 +43,11 @@ namespace ApiBanco.Repository
             parameters.Add("dataNascimento", cadastro.DataNascimento);
             parameters.Add("idade", cadastro.Idade);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = _dataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool UpdateCadastroCliente (long id, Cadastro cadastro)
+        public bool AtualizarCadastroCliente(long id, Cadastro cadastro)
         {
             var query = "UPDATE clientes SET cpf = @cpf, nome = @nome, dataNascimento = @dataNascimento, " +
                 "idade = @idade WHERE id = @id";
@@ -59,18 +59,18 @@ namespace ApiBanco.Repository
             parameters.Add("dataNascimento", cadastro.DataNascimento);
             parameters.Add("idade", cadastro.Idade);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = _dataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool DeleteCadastroCliente(long id)
+        public bool DeletarCadastroCliente(long id)
         {
             var query = "DELETE FROM clientes WHERE id = @id";
 
             var parameters = new DynamicParameters();
             parameters.Add("id", id);
 
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = _dataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;
         }
     }

@@ -2,7 +2,7 @@
 
 namespace ApiBanco.Core.Interfaces
 {
-    public interface ICadastroRepository
+    public interface ICadastroService
     {
         List<Cadastro> ConsultarCadastros();
         Cadastro ConsultarCadastroCliente(string cpf);

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using ApiBanco.Repository;
 using ApiBanco.Core.Services;
+using ApiBanco.Core.Interfaces;
 
 namespace ApiBanco.Controllers
 {
@@ -10,21 +10,21 @@ namespace ApiBanco.Controllers
     {
         public List<Cadastro> CadastrosLista { get; set; }
 
-        public CadastroRepository _repositoryCadastro;
+        public ICadastroService _cadastroService;
 
-        public CadastroController(IConfiguration configuration)
+        public CadastroController(ICadastroService cadastroService)
         {
             CadastrosLista = new List<Cadastro>();
-            _repositoryCadastro = new CadastroRepository(configuration);
+            _cadastroService = cadastroService;
         }
 
         //https://localhost:7214/Cadastro/buscar-todos-cadastros
         [HttpGet("buscar-todos-cadastros")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cadastro> GetTodosCadastros()
+        public ActionResult<Cadastro> ConsultarCadastros()
         {
-            var clientes = _repositoryCadastro.GetTodosCadastros();
+            var clientes = _cadastroService.ConsultarCadastros();
             if (clientes == null)
             {
                 return NotFound("Não há clientes cadastrados.");
@@ -36,9 +36,9 @@ namespace ApiBanco.Controllers
         [HttpGet("buscar-cadastro-cpf")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cadastro> GetCadastrosClientes(string cpf)
+        public ActionResult<Cadastro> ConsultarCadastroCliente(string cpf)
         {
-            var cliente = _repositoryCadastro.GetCadastrosClientes(cpf);
+            var cliente = _cadastroService.ConsultarCadastroCliente(cpf);
             if (cliente == null)
             {
                 return NotFound("Lamento, CPF não cadastrado.");
@@ -52,24 +52,24 @@ namespace ApiBanco.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<Cadastro> InsertCadastroCliente(Cadastro cliente)
+        public ActionResult<Cadastro> InserirCadastroCliente(Cadastro cliente)
         {
-            var clientes = _repositoryCadastro.InsertCadastroCliente(cliente);
+            var clientes = _cadastroService.InserirCadastroCliente(cliente);
             if (clientes == null)
             {
                 return BadRequest("Cadastro não válido, confira as informações e tente novamente.");
             }
             CadastrosLista.Add(cliente);
-            return CreatedAtAction(nameof(InsertCadastroCliente), cliente);
+            return CreatedAtAction(nameof(InserirCadastroCliente), cliente);
         }
 
         //https://localhost:7214/Cadastro/alterar-cadastro/1
         [HttpPut("alterar-cadastro/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public ActionResult<Cadastro> UpdateCadastroCliente(long id, Cadastro cliente)
+        public ActionResult<Cadastro> AtualizarCadastroCliente(long id, Cadastro cliente)
         {
-            if(_repositoryCadastro.UpdateCadastroCliente(id, cliente))
+            if(_cadastroService.AtualizarCadastroCliente(id, cliente))
             {
                 return Accepted(cliente);
             }
@@ -81,9 +81,9 @@ namespace ApiBanco.Controllers
         [HttpDelete("deletar-cadastro/{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Cadastro> DeleteCadastroCliente(int id)
+        public ActionResult<Cadastro> DeletarCadastroCliente(int id)
         {
-            if(_repositoryCadastro.DeleteCadastroCliente(id))
+            if(_cadastroService.DeletarCadastroCliente(id))
             {
                 return Ok();
             }
