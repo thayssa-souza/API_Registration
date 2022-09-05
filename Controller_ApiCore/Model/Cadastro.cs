@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
 using System.ComponentModel.DataAnnotations;
 
-namespace Controller_Api
+namespace ApiBanco.Core.Services
 {
     public class Cadastro
     {

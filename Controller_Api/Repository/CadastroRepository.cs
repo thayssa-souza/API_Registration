@@ -1,7 +1,8 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using ApiBanco.Core.Services;
 
-namespace Controller_Api.Repository
+namespace ApiBanco.Repository
 {
     public class CadastroRepository
     {

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Controller_Api;
-using Controller_Api.Repository;
+using ApiBanco.Repository;
+using ApiBanco.Core.Services;
 
-namespace Controller_Api.Controllers
+namespace ApiBanco.Controllers
 {
     [ApiController]
     [Route("[controller]")]
