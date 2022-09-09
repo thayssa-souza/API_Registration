@@ -16,6 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICadastroRepository, CadastroRepository>();
 builder.Services.AddScoped<ICadastroService, CadastroService>();
 builder.Services.AddScoped<IConnectionDataBase, ConnectionDataBase>();
+builder.Services.AddScoped<ValidateActionFilterByCpf>();
+builder.Services.AddScoped<ValidateActionFilterUpdate>();
 
 var app = builder.Build();
 

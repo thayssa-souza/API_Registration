@@ -13,7 +13,7 @@ namespace Controller_Api.Filters
             _cadastroService = cadastroService;
         }
 
-        public override async void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             string cpf = (string)context.ActionArguments["cpf"];
             if (_cadastroService.ConsultarCadastroCliente(cpf) != null)
