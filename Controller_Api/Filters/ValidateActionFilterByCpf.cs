@@ -15,6 +15,19 @@ namespace Controller_Api.Filters
 
         public override async void OnActionExecuting(ActionExecutingContext context)
         {
+            string cpf = (string)context.ActionArguments["cpf"];
+            if(_cadastroService.ConsultarCadastroCliente(cpf) == null)
+            {
+                context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
+            }
+            else if(_cadastroService.Equals(cpf))
+            {
+                context.Result = new StatusCodeResult(StatusCodes.Status409Conflict);
+            }
+            else
+            {
+                context.Result = new StatusCodeResult(StatusCodes.Status201Created);
+            }
         }
     }
 }
