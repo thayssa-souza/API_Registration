@@ -19,6 +19,11 @@ builder.Services.AddScoped<IConnectionDataBase, ConnectionDataBase>();
 builder.Services.AddScoped<ValidateActionFilterByCpf>();
 builder.Services.AddScoped<ValidateActionFilterUpdate>();
 
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add<GeneralExceptionFilters>();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -7,6 +7,7 @@ namespace ApiBanco.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [TypeFilter(typeof(GeneralExceptionFilters))]
     public class CadastroController : ControllerBase
     {
         public ICadastroService _cadastroService;
@@ -50,7 +51,7 @@ namespace ApiBanco.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [TypeFilter(typeof(ValidateActionFilterByCpf))]
+        [ServiceFilter(typeof(ValidateActionFilterByCpf))]
         public ActionResult<Cadastro> InserirCadastroCliente(Cadastro cliente, string cpf)
         {
             var clientes = _cadastroService.InserirCadastroCliente(cliente);
@@ -65,7 +66,7 @@ namespace ApiBanco.Controllers
         [HttpPut("alterar-cadastro/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [TypeFilter(typeof(ValidateActionFilterUpdate))]
+        [ServiceFilter(typeof(ValidateActionFilterUpdate))]
         public ActionResult<Cadastro> AtualizarCadastroCliente(long id, Cadastro cliente)
         {
             if(_cadastroService.AtualizarCadastroCliente(id, cliente))
@@ -78,15 +79,16 @@ namespace ApiBanco.Controllers
 
         //https://localhost:7214/Cadastro/deletar-cadastro/4
         [HttpDelete("deletar-cadastro/{id}")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ServiceFilter(typeof(ValidateActionFilterByCpf))]
         public ActionResult<Cadastro> DeletarCadastroCliente(int id)
         {
             if(_cadastroService.DeletarCadastroCliente(id))
             {
                 return Ok();
             }
-            return Unauthorized("Não foi possível deletar o cadastro.");
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
 }
