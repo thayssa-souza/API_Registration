@@ -24,10 +24,6 @@ namespace Controller_Api.Filters
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-            else
-            {
-                context.Result = new StatusCodeResult(StatusCodes.Status202Accepted);
-            }
         }
     }
 }
