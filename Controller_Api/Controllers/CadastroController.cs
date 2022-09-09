@@ -7,7 +7,7 @@ namespace ApiBanco.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [TypeFilter(typeof(GeneralExceptionFilters))]
+    [TypeFilter(typeof(LogResourceFilterTime))]
     public class CadastroController : ControllerBase
     {
         public ICadastroService _cadastroService;
