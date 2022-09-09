@@ -2,6 +2,7 @@ using ApiBanco.Core.Interfaces;
 using ApiBanco.Core.Services;
 using ApiBanco.Infra.Data;
 using ApiBanco.Infra.Data.Repository;
+using Controller_Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 

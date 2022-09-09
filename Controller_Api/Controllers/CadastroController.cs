@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiBanco.Core.Services;
 using ApiBanco.Core.Interfaces;
+using Controller_Api.Filters;
 
 namespace ApiBanco.Controllers
 {
@@ -49,10 +50,11 @@ namespace ApiBanco.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public ActionResult<Cadastro> InserirCadastroCliente(Cadastro cliente)
+        [TypeFilter(typeof(ValidateActionFilterByCpf))]
+        public ActionResult<Cadastro> InserirCadastroCliente(Cadastro cliente, string cpf)
         {
             var clientes = _cadastroService.InserirCadastroCliente(cliente);
-            if (clientes == null)
+            if (!_cadastroService.InserirCadastroCliente(cliente))
             {
                 return BadRequest("Cadastro não válido, confira as informações e tente novamente.");
             }
@@ -63,6 +65,7 @@ namespace ApiBanco.Controllers
         [HttpPut("alterar-cadastro/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [TypeFilter(typeof(ValidateActionFilterUpdate))]
         public ActionResult<Cadastro> AtualizarCadastroCliente(long id, Cadastro cliente)
         {
             if(_cadastroService.AtualizarCadastroCliente(id, cliente))
