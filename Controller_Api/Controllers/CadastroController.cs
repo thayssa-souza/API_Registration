@@ -52,6 +52,8 @@ namespace ApiBanco.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ServiceFilter(typeof(ValidateActionFilterByCpf))]
+        //service filter pq o filtro está usando a injeção de dependencia através da service para consultar o banco de dados
+        //se nao precisasse da injecao, fariamos o TypeFilter(tipeof(nomedaclassedofiltro())
         public ActionResult<Cadastro> InserirCadastroCliente(Cadastro cliente, string cpf)
         {
             var clientes = _cadastroService.InserirCadastroCliente(cliente);

@@ -4,15 +4,16 @@ namespace ApiBanco.Core.Services
 {
     public class CadastroService : ICadastroService
     {
-        public ICadastroRepository _cadastroRepository;
+        //no caso, criamos a IRepository porque vamos inserir algo no repositório
+        public ICadastroRepository _cadastroRepository; //variável criada com esse fim
         public CadastroService(ICadastroRepository cadastroRepository)
-        {//toda vez que criarmos o cadastro service for iniciado, vai inicializar a nossa interface
+        {//toda vez que criarmos o cadastro service for iniciado, vai injetar a nossa interface
          //para isso, falamos receba a interface e a alimente sempre que for inicializar \/
             _cadastroRepository = cadastroRepository;
         }
 
         public List<Cadastro> ConsultarCadastros()
-        {
+        { //repository pega pra mim o ConsultarCadastros()
             return _cadastroRepository.ConsultarCadastros();
         }
 
