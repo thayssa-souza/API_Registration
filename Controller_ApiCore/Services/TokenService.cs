@@ -25,7 +25,7 @@ namespace ApiBanco.Core.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = "APIClientes.com", //quem emitiu o token
-                Audience = "ApiProdutos.com", //quem vai receber o token
+                Audience = "APIEvents.com", //quem vai receber o token
                 Subject = new ClaimsIdentity(new Claim[]
                 {//infos do sujeito autenticado no token
                     new Claim(ClaimTypes.Name, nome),
